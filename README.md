@@ -1,7 +1,7 @@
 # DeepBait — Automated Clickbait Headline Generator
 
-ECE1508 Applied Deep Learning — Group 23
-Irys Zhang · Jiangchuan Yu · Yushun Tang
+ECE1508 Applied Deep Learning — Group 23  
+Irys Zhang, Jiangchuan Yu, Yushun Tang
 
 An LSTM-based language model that learns the writing style of clickbait headlines and generates new ones from scratch.
 
@@ -48,6 +48,7 @@ pip install -r requirements.txt
 Download the **DL in NLP Spring 2019 Classification** dataset from Kaggle:
 
 **Option A — Kaggle API (automated):**
+
 ```bash
 pip install kaggle
 # Place your kaggle.json in ~/.kaggle/
@@ -55,7 +56,8 @@ bash data/download_data.sh
 ```
 
 **Option B — Manual:**
-1. Visit https://www.kaggle.com/datasets/datasnaek/clickbait
+
+1. Visit [https://www.kaggle.com/datasets/datasnaek/clickbait](https://www.kaggle.com/datasets/datasnaek/clickbait)
 2. Download and extract the CSV into `data/`
 
 The CSV must contain a text column (`headline` / `text`) and a label column (`label`).
@@ -101,12 +103,15 @@ python src/generate.py \
 ```
 
 **Temperature guide:**
-| Value | Effect |
-|-------|--------|
+
+
+| Value | Effect                   |
+| ----- | ------------------------ |
 | 0.5   | Conservative, repetitive |
-| 0.8   | Balanced (recommended) |
-| 1.0   | Standard sampling |
-| 1.2+  | Creative, less coherent |
+| 0.8   | Balanced (recommended)   |
+| 1.0   | Standard sampling        |
+| 1.2+  | Creative, less coherent  |
+
 
 ### 3. Evaluate
 
@@ -144,3 +149,4 @@ Input tokens → Embedding (128-dim) → LSTM (256 hidden, 2 layers) → Linear 
 - **Jiangchuan Yu:** Neural network architecture, training loop (`model.py`, `train.py`)
 - **Yushun Tang:** Text generation, temperature sampling, evaluation scripts (`generate.py`, `evaluate.py`)
 - **All members:** Experimentation, results analysis, report writing, presentation
+
