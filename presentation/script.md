@@ -6,7 +6,7 @@
 
 ## Title Slide (~15 seconds)
 
-> Good afternoon everyone. We are Group 23. I'm [name], and our teammates are [names]. Today we'll present DeepBait — our project on generating clickbait headlines from article content using deep learning.
+> Good afternoon everyone, today we'll present DeepBait — our project on generating clickbait headlines from article content using deep learning.
 
 ---
 
@@ -46,14 +46,14 @@
 >
 > The key finding here is striking: two-stage training reduces perplexity by 65% compared to direct training — from 533 down to 184. This confirms that general summarisation knowledge transfers effectively to clickbait generation, and that the two-stage approach is critical when labelled clickbait data is scarce.
 >
-> Experiment 3 with BART fine-tuning is currently in progress and we expect it to push results even further given its 406 million parameter capacity and pre-existing summarisation ability.
+> In Experiment 3, we fine-tune BART-large-CNN — a 406 million parameter transformer that's already pre-trained on summarisation. With just one epoch of fine-tuning on our clickbait data, BART achieves a best validation loss of 2.038, corresponding to a perplexity of just 7.7. That's a massive leap — two orders of magnitude better than the direct LSTM, and over 20 times better than the pretrained LSTM. This really demonstrates the power of large-scale pre-trained transformers even on a niche task like clickbait generation.
 
 ---
 
 ## Slide 4: Conclusion & Future Work (~45 seconds)
 
-> To wrap up, we have three main takeaways. First, article-conditioned generation is far more meaningful than simply generating headlines from seed phrases — the model actually reads and responds to article content. Second, data augmentation through the Webis-17 corpus and two-stage training are critical strategies when working with limited labelled data. And third, our pretrain-finetune LSTM achieves a perplexity of 184, and we expect BART to improve on this further.
+> To wrap up, we have three main takeaways. First, article-conditioned generation is far more meaningful than simply generating headlines from seed phrases — the model actually reads and responds to article content. Second, data augmentation through the Webis-17 corpus and two-stage training are critical strategies when working with limited labelled data. And third, BART fine-tuning achieves a perplexity of 7.7, vastly outperforming our best LSTM at 184 — showing that large pre-trained transformers transfer remarkably well even to niche generation tasks.
 >
-> For future work, we plan to add an attention mechanism so the decoder can focus on the most relevant parts of the article instead of relying on a single fixed-length vector. We also want to replace random sampling with beam search for more consistent generation quality. And finally, we want to conduct human evaluation and measure output quality with metrics like ROUGE and BERTScore.
+> For future work, we plan to add an attention mechanism to the LSTM so the decoder can focus on the most relevant parts of the article. We also want to replace random sampling with beam search for more consistent generation quality. And finally, we want to conduct human evaluation comparing BART and LSTM outputs, and measure quality with metrics like ROUGE and BERTScore.
 >
 > Thank you — we're happy to take any questions.

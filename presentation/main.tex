@@ -137,8 +137,8 @@ Generating clickbait headlines \textit{conditioned on article content} is undere
 \midrule
 1 & Direct Seq2Seq (Webis+Kaggle) & 6.278 & 533 \\
 2a & Pretrain on CNN/DailyMail     & 5.251 & 191 \\
-2b & + Finetune on clickbait       & \alert{5.216} & \alert{184} \\
-3 & BART fine-tune                 & \multicolumn{2}{c}{\textit{in progress}} \\
+2b & + Finetune on clickbait       & 5.216 & 184 \\
+3 & BART fine-tune                 & \alert{2.038} & \alert{7.7} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -146,7 +146,7 @@ Generating clickbait headlines \textit{conditioned on article content} is undere
 \vspace{0.15cm}
 
 \begin{alertblock}{Key Finding}
-Two-stage pretrain $\rightarrow$ finetune reduces perplexity by \textbf{65\%} vs.\ direct training (184 vs.\ 533), confirming that general summarisation knowledge transfers effectively to clickbait generation.
+Transfer learning dominates: BART achieves \textbf{PPL 7.7} vs.\ LSTM's best of 184. Even within LSTMs, pretrain $\rightarrow$ finetune cuts perplexity by \textbf{65\%} over direct training (184 vs.\ 533).
 \end{alertblock}
 
 \end{frame}
@@ -162,7 +162,7 @@ Two-stage pretrain $\rightarrow$ finetune reduces perplexity by \textbf{65\%} vs
 \begin{enumerate}
     \item Article-conditioned generation is far more meaningful than seed-phrase LMs
     \item Data augmentation (Webis-17) and two-stage training are critical for small-data seq2seq
-    \item Pretrain--finetune LSTM achieves \textbf{PPL 184}; BART expected to push further
+    \item BART fine-tuning achieves \textbf{PPL 7.7}, vastly outperforming the LSTM (PPL 184)
 \end{enumerate}
 \end{block}
 
@@ -172,7 +172,7 @@ Two-stage pretrain $\rightarrow$ finetune reduces perplexity by \textbf{65\%} vs
 \begin{itemize}
     \item Add \textbf{attention mechanism} to let the decoder focus on relevant article segments
     \item Replace greedy / random sampling with \textbf{beam search}
-    \item Complete BART experiment and compare fluency via \textbf{human evaluation}
+    \item Compare BART vs.\ LSTM fluency via \textbf{human evaluation}
     \item Evaluate using \textbf{ROUGE / BERTScore} against real clickbait headlines
 \end{itemize}
 
