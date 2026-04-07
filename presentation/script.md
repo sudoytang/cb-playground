@@ -22,7 +22,7 @@
 
 ## Slide 2: Model Architecture (~1 minute 30 seconds)
 
-> Let me walk you through our architecture. We use a Seq2Seq encoder-decoder model built with LSTMs.
+> For model architecture, we use a Seq2Seq encoder-decoder model built with LSTMs.
 >
 > The article text goes through tokenization, then an embedding layer, and into an LSTM Encoder. The encoder reads the article — truncated to the first 100 tokens — and compresses it into a hidden state vector, the h_n and c_n pair.
 >
