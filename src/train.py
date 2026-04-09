@@ -162,6 +162,7 @@ def load_checkpoint_weights(
 def train(args) -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
+    print(f"Train/val split_seed (NumPy): {args.split_seed}")
 
     # ------------------------------------------------------------------ Data
     # Priority for vocabulary (highest to lowest):
@@ -201,6 +202,7 @@ def train(args) -> None:
         hf_title_col=args.hf_title_col,
         hf_max_samples=args.hf_max_samples,
         preset_vocab=preset_vocab,
+        split_seed=args.split_seed,
     )
 
     vocab_size = len(word2idx)
@@ -212,6 +214,7 @@ def train(args) -> None:
         "dropout": args.dropout,
         "max_article_len": args.max_article_len,
         "max_title_len": args.max_title_len,
+        "split_seed": args.split_seed,
     }
 
     # ----------------------------------------------------------------- Model
@@ -341,6 +344,12 @@ if __name__ == "__main__":
                         help="Title column name (auto-detected for known datasets).")
     parser.add_argument("--hf_max_samples", type=int, default=None,
                         help="Max number of samples to load from HuggingFace dataset.")
+    parser.add_argument(
+        "--split_seed",
+        type=int,
+        default=42,
+        help="NumPy seed for shuffling before train/validation split.",
+    )
     args = parser.parse_args()
 
     train(args)

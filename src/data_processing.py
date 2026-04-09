@@ -407,6 +407,7 @@ def build_dataloaders(
     hf_title_col: str | None = None,
     hf_max_samples: int | None = None,
     preset_vocab: tuple[dict, dict] | None = None,
+    split_seed: int = 42,
 ) -> tuple[DataLoader, DataLoader, dict, dict]:
     """
     Full pipeline: load data -> build vocab -> create DataLoaders.
@@ -429,6 +430,7 @@ def build_dataloaders(
         preset_vocab:     Optional (word2idx, idx2word) tuple to reuse an existing
                           vocabulary instead of building a new one from the data.
                           Use this in fine-tune stage to share Stage 1's vocab.
+        split_seed:       NumPy seed for shuffling indices before train/val split.
 
     Returns:
         train_loader, val_loader, word2idx, idx2word
@@ -452,7 +454,7 @@ def build_dataloaders(
         print(f"After HuggingFace dataset: {len(pairs)} total (article, title) pairs.")
 
     # Shuffle and split
-    np.random.seed(42)
+    np.random.seed(split_seed)
     indices = np.random.permutation(len(pairs))
     n_val = int(len(pairs) * val_split)
     val_pairs = [pairs[i] for i in indices[:n_val]]
@@ -492,6 +494,12 @@ if __name__ == "__main__":
     parser.add_argument("--hf_article_col", type=str, default=None)
     parser.add_argument("--hf_title_col", type=str, default=None)
     parser.add_argument("--hf_max_samples", type=int, default=None)
+    parser.add_argument(
+        "--split_seed",
+        type=int,
+        default=42,
+        help="NumPy seed for train/validation shuffle before split.",
+    )
     args = parser.parse_args()
 
     train_loader, val_loader, word2idx, idx2word = build_dataloaders(
@@ -507,6 +515,7 @@ if __name__ == "__main__":
         hf_article_col=args.hf_article_col,
         hf_title_col=args.hf_title_col,
         hf_max_samples=args.hf_max_samples,
+        split_seed=args.split_seed,
     )
 
     for article, dec_input, target in train_loader:

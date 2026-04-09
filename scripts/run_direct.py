@@ -46,6 +46,12 @@ def main():
                         help="Min word frequency used only when --vocab_from is not found.")
     parser.add_argument("--max_article_len", type=int, default=100)
     parser.add_argument("--max_title_len", type=int, default=20)
+    parser.add_argument(
+        "--split_seed",
+        type=int,
+        default=42,
+        help="NumPy seed for shuffling before train/validation split.",
+    )
     args = parser.parse_args()
 
     # Build the args namespace expected by train.train()
@@ -87,12 +93,14 @@ def main():
         # no resume
         resume_checkpoint=None,
         early_stopping_patience=args.patience,
+        split_seed=args.split_seed,
     )
 
     print("=" * 60)
     print("Experiment 1: Direct clickbait training")
     print(f"  CSV data:      {args.data_path}")
     print(f"  Webis-17:      {args.webis17_path} (min_score={args.webis17_min_score})")
+    print(f"  Split seed:    {args.split_seed}")
     print(f"  Checkpoint:    {args.checkpoint_dir}/")
     print(f"  Early stop:    patience={args.patience}")
     print("=" * 60)

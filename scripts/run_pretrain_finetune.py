@@ -58,6 +58,7 @@ def make_args(overrides: dict) -> types.SimpleNamespace:
         hf_max_samples=None,
         resume_checkpoint=None,
         early_stopping_patience=0,
+        split_seed=42,
     )
     defaults.update(overrides)
     return types.SimpleNamespace(**defaults)
@@ -76,6 +77,12 @@ def main():
                         help="HuggingFace dataset for pre-training (default: cnn_dailymail:3.0.0).")
     parser.add_argument("--hf_max_samples", type=int, default=None,
                         help="Limit HuggingFace samples, e.g. 50000 for a quick test.")
+    parser.add_argument(
+        "--split_seed",
+        type=int,
+        default=42,
+        help="NumPy seed for shuffling before train/validation split (both stages).",
+    )
 
     # Stage 1
     parser.add_argument("--pretrain_epochs", type=int, default=10)
@@ -146,6 +153,7 @@ def main():
         hf_dataset=args.hf_dataset,
         hf_max_samples=args.hf_max_samples,
         webis17_path=None,
+        split_seed=args.split_seed,
     ))
 
     _train_module.train(stage1_args)
@@ -181,6 +189,7 @@ def main():
         webis17_min_score=args.webis17_min_score,
         resume_checkpoint=pretrain_ckpt,
         early_stopping_patience=args.finetune_patience,
+        split_seed=args.split_seed,
     ))
 
     _train_module.train(stage2_args)

@@ -96,6 +96,12 @@ def main():
     parser.add_argument("--max_input_len", type=int, default=512)
     parser.add_argument("--max_target_len", type=int, default=64)
     parser.add_argument("--val_split", type=float, default=0.1)
+    parser.add_argument(
+        "--split_seed",
+        type=int,
+        default=42,
+        help="NumPy seed for shuffling before train/validation split; also passed to Trainer as seed.",
+    )
     parser.add_argument("--patience", type=int, default=3,
                         help="Early stopping patience (epochs).")
     parser.add_argument("--fp16", action="store_true", default=True,
@@ -118,6 +124,7 @@ def main():
     print("Experiment 3: Fine-tuning BART on clickbait data")
     print(f"  Model:         {args.model_dir}")
     print(f"  Data:          {args.data_path} + {args.webis17_path}")
+    print(f"  Split seed:    {args.split_seed}")
     print(f"  Epochs:        {args.epochs}  (early stop patience={args.patience})")
     print(f"  Batch size:    {args.batch_size} × {args.grad_accum} accum = {args.batch_size * args.grad_accum} effective")
     print(f"  LR:            {args.lr}")
@@ -133,7 +140,7 @@ def main():
         pairs = pairs + webis_pairs
         print(f"Combined: {len(pairs)} (article, title) pairs.")
 
-    np.random.seed(42)
+    np.random.seed(args.split_seed)
     indices = np.random.permutation(len(pairs))
     n_val = int(len(pairs) * args.val_split)
     val_pairs   = [pairs[i] for i in indices[:n_val]]
@@ -180,6 +187,7 @@ def main():
         logging_steps=100,
         save_total_limit=2,
         report_to="none",
+        seed=args.split_seed,
     )
 
     callbacks = [EarlyStoppingCallback(early_stopping_patience=args.patience)]
